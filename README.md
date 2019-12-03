@@ -310,8 +310,27 @@ Aquesta comanda llista totes les imatges locals que tenim. Com que hem utilitzat
 
 ### 5.2.2 Iniciar contenidor amb la nova imatge ssh
 
+S'utilitzarà la nova imatge per a crear un nou contenidor que tingui el servei de ssh engegat. Fem servir la comanda docker run per crar el nou contenidor i posar-lo en marxa.
 
+    docker run -d -p 30000:22 <nom_imatge>
 
+Com es pot veure és necessari fer la relació de ports de la màquina real al contenidor. Si no ho fessim no podriem accedir al contenidor per ssh. Tot i que utilitzi el port 22 com hem vist abans, el contenidor no té @IP per tant ens hem de dirigir a ell des de la màquina real. 
+
+De moment no he trobat cap manera de reassignar ports o obrir-ne de nous un cop el contenidor està creat. Es possible que és pugui, però per el moment l'única manera és parant el contenidor i crear-ne un de nou a partir de l'actual, assignant tots els ports necessaris amb el parametre -p.
+
+Amb el paràmetre -d indiquem que el conenidor s'iniciará en mode 'detached' és a dir que no estarà connectat a la consola, o bé que correrà en background. Això és important ja que si no ho fem, el cicle de vida del contenidor estarà lligat al terminal.
+
+Un cop s'ha encés el contenidor podem accedir a ell via ssh.
+
+![acces ssh nou contenidor](images/captura4.png)
+
+Si mirem quins processos hi ha actius veurem que només hi a la consola i el servei de ssh.
+
+Un cop dins del servidor, el client podria instal·lar qualsevol paquet que volgues. L'inconvenient és que si necessita accés al exterior s'haurà d'indicar abans de crear el contenidor.
+
+Un problema més gran és en relació al proces que ha iniciat el contenidor. Si no especifiquem res més no tindrem acces al systemctl i per tant no podrem aixecar nous servies.
+
+![Operació no permesa](images/captura5.png)
 
 
 
