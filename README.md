@@ -253,15 +253,62 @@ Si fem exit el contenidor es pararà pero seguira existint. Si fem docker ps -a 
 
 En l'apartat anterior hem vist com crear un contenidor amb un sistema ubuntu. Si seguim aquells passos, només podrem accedir al docker de forma local. A part l'unic proces actiu al engegar el docker era el propi shell per tant, de cares a un VPS ens serveix de poc tal com està.
 
+El primer pas seria instal·lar un servidor ssh perque el client del ISP pugui connectar-se a la seva "màquina virtual". Això es podria fer un cop accedim al shell del nou contenidor, però no seria gens automatitzable.
+
+El que és més recomenable és fer que el contenidor ja tingui tot el que necessita un cop s'engega. D'aquesta manera, al rebre la petició del client, nomes caldrà crear i engegar el contenidor. El podrà connectar-se sense implicació del ISP.
+
+El que se sol fer, es preparar imatges custom on, apart del sistema operatiu, indicarem tots els paquets necessaris que ha de tenir un contenidor.
+
+Quan es crei un nou contenidor a partir d'aquestes imatges, ja disposarà de tot el necessari de forma automàtica. 
+
+### 5.2.1 Creació d'una nova imatge amb Dockerfile
+
+Per crear imatges custom necessitem crear un fitxer Dockerfile que contindrà totes les instruccions que s'hauran de realitzar al constuir la imatge. El fitxer Dockerfile funciona de forma similar a un makefile per compilar un programa.
+
+Exemple de Dockerfile per a instal·lació de openssh:
+
+    FROM ubuntu:18.04
+
+    RUN apt-get update && apt-get install -y openssh-server
+    RUN echo 'root:patates' | chpasswd
+    RUN sed -ie '0,/#PermitRootLogin prohibit-password/s/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+    # SSH login fix. Otherwise user is kicked off after login
+    RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+    ENV NOTVISIBLE "in users profile"
+    RUN echo "export VISIBLE=now" >> /etc/profile
+
+    EXPOSE 22
+    CMD ["/usr/sbin/sshd", "-D"]
 
 
+- __FROM__: A la linia From indiquem de quines imatges inicials volem partir. En aquests cas des d'una imatge de ubuntu. El format és [nom_imatge]:[versió/tag]
+- __RUN__: Amb les comandes run podem executar comandes del sistema operatiu base per crear directoris o instal·lar paquets. En aquest cas s'instal·la un openss-server i es prepara perque l'usuari root pugui tenir acces.
+- __ENV__: Es poden definir variables d'entorn que el contenidor tindrà disponibles un cop s'engegi.
+- __EXPOSE__: Aquesta comanda enspermet tenir ports habilitats dins del contenidor. En aquest cas habilitem el port 22 ja que haurem de connectar per ssh
+- __CMD__: Es la comanda que executarà el contenidor al iniciar-se.
+
+Només podem tenir una linia CMD per tant, tot i que tenim un sistema operatiu i podem tenir més d'un servei actiu, d'inici només podem inciar una comanda.
+
+ Docker està pensat per tenir serveis únics amb el mínim necessari per funcionar. Per això no te sentit fer que els contenidors executin d'inici més d'una aplicació. Això ens afectarà posteriorment quant necessitem aixecar més serveis dins del contenidor.
 
 
+Un cop s'ha definit el Dockerfile amb totes les instruccions necessaries, s'ha de crear la nova imatge.
+
+    docker build -t <nom_imatge> .
+
+Com que podem tenir diferents Dockerfiles per crear diferents imatges, s'ha d'indicar el path del fitxer. En aquest cas és el directori actual.
+Al fer el 'build' al paht seleccionat, Docker buscarà dins d'aquest directori el fitxer anomenat Dockerfile i l'executarà.
+
+Un cop s'ha creat la nova imatge podem veure-la amb la comanda:
+
+    docker images
+
+Aquesta comanda llista totes les imatges locals que tenim. Com que hem utilitzat la imatge base 'ubuntu:18.04' aquesta també la tindrem, ja que l'ha descarregat per montar la nova imatge.
 
 
-
-
-
+### 5.2.2 Iniciar contenidor amb la nova imatge ssh
 
 
 
