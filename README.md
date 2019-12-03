@@ -206,6 +206,71 @@ s’apliquin els canvis.
     sudo usermod -aG docker <username>;
 
 
+## 5. Creació d'un docker per VPS
+
+Per crear un contenidor necessitem sempre crear-lo des d'una imatge base que conté tot el necessari perque el contenidor funcioni correctament.
+
+Docker disposa d'una serie d'imatges oficials predefinides.  Per veure les imatges disponibles hi ha la comanda 'search'. Per exemple si volem veure totes les imatges relacionades amb apache fem:
+
+    docker search apache
+    
+![imatges apache](images/captura1.png)
+
+A part de serveis, també podem trobar imatges de diferents sistemes operatius. Com ja s'ha comentat s'ha d'anar en compte ja que els conenidors utilitzaran el mateix kernel que la màquina host, per tant podem trobar sistemes incompatibles.
+
+Docker té versió tant de windows com de linux per tant podriem tenir contenidors amb els 2 sistemes, sempre que estiguin al host adequat.
+
+### 5.1 Instal·lació d'un ubuntu mínim
+
+Per fer el treball em centrarè en contenidors amb ubuntu, peró podria ser qualsevol sistema linux. 
+
+La creació i posada en marxa d'un contenidor és molt simple. Ens fan falta les seguents comandes:
+
+- __docker create 'imatge'__: Crea el contenidor amb la imatge seleccionada. Primer consulta les imatges locals, i si no te la 'imatge' intenta buscarla al repositori de Docker i la descarrega en local.
+
+- __docker start 'nom contenidor'__: Un cop creada la imatge s'ha de posar en marxa amb aquesta comanda. Quan es crea el contenidor se li pot posar un nom amb el parametre __--name__. Si no l'hi hem posat nom docker n'hi posara un d'aleatori.
+
+- __docker ps [-a]__: Ens mostra la informació bàsica de tots els contenidors encesos. Amb aquesta comanda podem veure el nom dels contenidors, si no els hi hem assignat. El paràmetre -a mostra tots els contenidors disponibles, engegats o parats.
+
+- __docker run [-it] 'imatge'__: Aquesta comanda es la conjunció del __docker create__ i __docker start__. Si posem el paràmetre -it, entrarem al shell del contenidor.
+
+Nota: En principi totes les comandes haurien de funcionar correctament pero en alguns casos, el docker create + start no m'ha funcionat amb ubuntu per tant utilitzo el docker run
+
+Per veure totes les opcions disponibles de docker run veure [4]
+
+Exemple creació de contenidor ubuntu:
+
+![Creació contenidor](images/captura2.png)
+
+Com es pot observar, ara la consola que es mostra és la del contenidor ubuntu i podem que només hi ha el proces del shell actiu.
+
+Si fem exit el contenidor es pararà pero seguira existint. Si fem docker ps -a el podrem veure.
+
+![Docker parat](images/captura3.png)
+
+
+### 5.2 Contenidor ubuntu amb requeriments minims per servei VPS
+
+En l'apartat anterior hem vist com crear un contenidor amb un sistema ubuntu. Si seguim aquells passos, només podrem accedir al docker de forma local. A part l'unic proces actiu al engegar el docker era el propi shell per tant, de cares a un VPS ens serveix de poc tal com està.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Bibliografia
@@ -220,3 +285,7 @@ https://www.ionos.es/digitalguide/servidores/know-how/alternativas-a-los-contene
 [3] LXC vs KVM
 
 https://www.skysilk.com/blog/2019/lxc-vs-kvm/
+
+[4] Documentació docker run
+
+https://docs.docker.com/engine/reference/run/
