@@ -1,8 +1,19 @@
-# CMXSI-PROJ2
 
-Servidors virtuals complets (VPS)
+---
+title: "Servidors virtuals complets (VPS)"
+author: [Francesc Xavier Bullich Parra, GEINF (UDG-EPS)]
+date: 4 de Desembre de 2019
+subject: "Udg - Eps"
+tags: [VPS]
+subtitle: "Tutor de la pràctica : Antonio Bueno"
+titlepage: true
 
-## 1. Introducció
+...
+
+\newpage
+
+
+# 1. Introducció
 Es vol diferenciar l’oferta d’un ISP oferint als clients alguns extres. En aquest cas l’ISP oferirà un servei de
 servidors virtualitats privats (VPS) de manera que pugui instal·lar totes les aplicacions que necessiti.
 
@@ -18,7 +29,7 @@ Alguns aspectes importants dels VPS son:
 D’altra banda, al tenir control sobre el sistema VPS, requereix que el client tingui major coneixement tècnic
 per administrar el servidor. Aquest punt pot portar a vulnerabilitats de seguretat si no es configura bé.
 
-### 1.1 Plans d’allotjament
+## 1.1 Plans d’allotjament
 En general els proveïdors de VPS ofereixen diferents plans, els quals van escalen en recursos. Aquests
 plans estan pensats per oferir recursos segons les necessitats/pressupost dels clients. Trobem els plans
 més econòmics que tenen uns recursos més limitats per usuaris que no requereixin gaire potencia ni
@@ -32,7 +43,7 @@ moment és necessiten recursos extres, sempre que no sigui un canvi molt signifi
 D’altra banda també se sol poder escalar canviant de pla sense que suposi feina extra pel client
 (reinstal·lar tot el subsistema en un altre servidor).
 
-### 1.2 Objectiu
+## 1.2 Objectiu
 L’objectiu és instal·lar i configurar algun paquet que permeti crear i gestionar VPS per tal que el client
 pugui tenir el control sobre el seu servidor. En apartats posteriors es veuran alguns programes que poden
 servir per la gestió dels VPS.
@@ -52,11 +63,11 @@ client).
 
 
 
-### 2. Software de virtualització per els VPS
+## 2. Software de virtualització per els VPS
 
 Es poden utilitzar diferents eines a diferents nivells que permetrien la gestió de VPS.
 
-### 2.1 IaaS (Infrastructure as a Service):
+## 2.1 IaaS (Infrastructure as a Service):
 En aquest nivell podem trobar per exemple OpenStack. És una plataforma de cloudComputing per treballar
 en núvols públics o privats. Es composa de diferents mòduls que estan separats entre ells però que
 interactuen. Entre altres, hi ha mòduls que serveixen per autenticació i d’altres que son només
@@ -66,7 +77,7 @@ Com és pot intuir OpenStack serviria per gestionar els VPS dels clients però o
 per funcionar requereix un gran esforç inicial per al final només oferir VPS. Per tant, per el tema que
 ocupa, no s’utilitzarà aquest software.
 
-### 2.2 Eines de Virtualització completa
+## 2.2 Eines de Virtualització completa
 En aquest cas ens trobem en l’extrem oposat. Aquestes eines permeten vitalitzar tot el hardware, com
 memòria, processador, interfícies de xarxa o disc de forma que el VPS quedi aïllat dels altres. Aquestes
 eines permeten instal·lar qualsevol sistema operatiu i a més donar total llibertat al client. Ofereixen
@@ -75,7 +86,7 @@ compleixi amb la limitació que ha contractat. En aquest apartat trobem eines co
 KVM entre altres.
 Qualsevol d’aquestes opcions pot ser vàlida per la gestió dels VPS.
 
-### 2.3 Contenidors
+## 2.3 Contenidors
 Una opció una mica diferent és utilitzar eines de contenidors per gestionar els VPS. S’ha de tenir en
 compte que els contenidors corren en el mateix kernel del sistema amfitrió i per tant estan lligats en certa
 manera. Per exemple contenidors muntats sobre un sistema Linux no podrà tenir contenidors Windows ja
@@ -98,7 +109,7 @@ però que no tenen un kernel propi i per tant depenen del sistema operatiu base.
 
 
 
-## 3. Elecció de l’eina de virtualització
+# 3. Elecció de l’eina de virtualització
 
 Com ja he comentat, descarto eines a nivell de IaaS ja que se’n van una mica del que es necessita per un
 VPS. Per tant em quedo entre les eines de virtualització completa o els contenidors full System.
@@ -126,7 +137,7 @@ Un punt a favor de Docker es que es pot instal·lar en diversos sistemes operati
 a part de Linux. Per contra LXC només funciona sobre Linux i per tant només podríem tenir contenidors de
 diferents distribucions Linux. Docker donaria diversitat en quant a sistemes operatius a oferir.
 
-### 3.1 Proves realitzades
+## 3.1 Proves realitzades
 
 LXC i Docker
 
@@ -156,7 +167,7 @@ la imatge esta muntada perquè executi un openssh d’inici, aquest servei si qu
 S’hauria de veure quin comportament tenen els contenidors entre LXC i Docker.
 
 
-### 3.2 VM vs Contenidors
+## 3.2 VM vs Contenidors
 Els contenidors, a diferencia de la virtualització completa, no necessita virtualitzar elements com el disc, la
 memòria o la CPU. A més com que tots els contenidors utilitzen el mateix kernel del sistema amfitrió per
 tant també és mes lleuger que la virtualització completa.
@@ -172,9 +183,9 @@ que, si funciona igual que LXC, tinc la possibilitat de poder instal·lar més s
 distribucions de Linux.
 
 
-## 4 Instal·lació de Docker
+# 4 Instal·lació de Docker
 
-### 4.1 Ubuntu 18.04
+## 4.1 Ubuntu 18.04
 
 S’instal·larà Docker des del repositori oficial. Per fer-ho s’instalaran primer alguns paquets necessaris.
 Primer de tot els paquets que permeten a ‘apt’ utilitzar HTTPS.
@@ -206,7 +217,7 @@ s’apliquin els canvis.
     sudo usermod -aG docker <username>;
 
 
-## 5. Creació d'un docker per VPS
+# 5. Creació d'un docker per VPS
 
 Per crear un contenidor necessitem sempre crear-lo des d'una imatge base que conté tot el necessari perque el contenidor funcioni correctament.
 
@@ -220,7 +231,7 @@ A part de serveis, també podem trobar imatges de diferents sistemes operatius. 
 
 Docker té versió tant de windows com de linux per tant podriem tenir contenidors amb els 2 sistemes, sempre que estiguin al host adequat.
 
-### 5.1 Instal·lació d'un ubuntu mínim
+## 5.1 Instal·lació d'un ubuntu mínim
 
 Per fer el treball em centrarè en contenidors amb ubuntu, peró podria ser qualsevol sistema linux. 
 
@@ -249,7 +260,7 @@ Si fem exit el contenidor es pararà pero seguira existint. Si fem docker ps -a 
 ![Docker parat](images/captura3.png)
 
 
-### 5.2 Contenidor ubuntu amb requeriments minims per servei VPS
+## 5.2 Contenidor ubuntu amb requeriments minims per servei VPS
 
 En l'apartat anterior hem vist com crear un contenidor amb un sistema ubuntu. Si seguim aquells passos, només podrem accedir al docker de forma local. A part l'unic proces actiu al engegar el docker era el propi shell per tant, de cares a un VPS ens serveix de poc tal com està.
 
@@ -330,28 +341,169 @@ Un cop dins del servidor, el client podria instal·lar qualsevol paquet que volg
 
 Un problema més gran és en relació al proces que ha iniciat el contenidor. Si no especifiquem res més no tindrem acces al systemctl i per tant no podrem aixecar nous servies.
 
+
 ![Operació no permesa](images/captura5.png)
 
+El que si que es permet és realitzar crides 'service' pero no se quins inconvenients poden arribar a sorgir si no s'inicia el sistema amb proces initd.
+
+
+## 5.3 Limitiació de hardware
+
+Quan mirem els diferents proveidors de VPS veiem que una de les coses que ofereixen és triar el hardware que es contractarà. Ja sigui de forma senzilla, triant algun de les plantilles predefinides amb un hardware fix, o bé seleccionant el hardware amb diferents mesures preestavlertes per el proveidor.
+
+Docker permet limitar de forma similar els recursos que pot utilitzar un servidor. En principi també és pot gestionar de forma dinàmica pero en aquesta pràctica només es tractarà de forma fixe, sense canvis.
+
+En concret limitarem la mida de la memoria i cpu que pot tenir cada contenidor. Crec que existeix també alguna forma de limitar l'espai de disc peró de moment no he aconseguit fer-ho funcionar.
+
+
+### 5.3.1 Memòria
+
+Hi ha diverses opcions relacionades amb la limitació de memòria (veure [5]). En aquest cas farem un limit simple i fix.
+
+El paràmetre que s'ha d'utilitzar en aquest cas és el -m o --memory. Només cal indicar la mida assignada en mb o gb.
+
+El nombre mínim de memoria és 4Mb i el màxim depen de la mida de la memoria de la màquina real. Tot i que si posem més memoria, docker no es queixa pero acaba posant el màxim de memoria que te la màquina i no el nombre indicat.
+
+
+    docker run -it -d --memory="256m" ubuntu
+
+Podem utilitzar la comanda 'stats' per veure que realment el nou contenidor té la memória limitada a aquesta mida.
+
+    docker stats
+
+![Límit memòria](images/captura6.png)
+
+Com es pot observar no ocupen gaires recursos ja que cada contenidor només te els pocs elements necessaris per funcionar.
+
+
+__Requeriments__
+
+Per poder executar correctament la comanda de docker que limita le memoria, s'ha de modificar el fitxer de configuració del host: __/etc/default/grub__. 
+Un cop modificat s'ha de fer un update del grub i reiniciar la màquina.
+
+En concret s'ha de posar aquesta línia:
+
+    GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
+
+</line>
+
+    sudo nano /etc/default/grub
+    sudo update-grub
+    sudo reboot
+
+### 5.3.2 CPU
+
+Com en el cas anterior, hi ha diverses opcions en quant a limitació de CPU. Em quedaré amb el cas més senzill de limitació fixe pero es poden veure les altres a [5].
+
+S'utilitza el parametre --cpus. En aquest cas no s'indica directament una mida o frequencia de treball sino que s'indica un valor decimal. Aquest valor farà referència a la fracció de nombre de cpus de la màquina host.
+
+L'interval de valors permesos és de 0.01 fins al nombre de cpus reals de la màquina host. En aquest cas, si superem aquest nombre, docker si que es queixa avisant-nos de la mida màxima i no continua amb la creació del contenidor.
+
+    docker run -it -d --cpus=0.5 ubuntu
+
+En aquest cas amb multiplicador de 0.5, estem assignant l'equivalent a mitja cpu de les que tenim reals.
+
+La comanda 'stats' no ens informa de la mida de la cpu triada pero podem buscar-la d'una altra forma.
+
+    docker inspect <nom docker> | grep -i cpu
+
+Amb docker inspect trobem tota la informació del conenidor en format json.
+
+![Informació cpu](images/captura7.png)
+
+Com es pot observar hi ha diversos atributs relacionats amb la cpu que es poden modificar, en aquest cas l'atribut afectat és el NanoCpus. Si canviem el valor del paràmetre al crear el contenidor podrem veure com aquest valor canvia.
+
+
+## 5.4 Inici amb systemd
+
+Com s'ha comentat anteriorment, no totes les comandes estan disponibles iniciant el conenidor per exemple amb ssh. Per tenir disponible el systemctl, entre altres, necessitem que el contenidor inicii amb el proces systemd o initd.
+
+S'haurà de modificar el Dockerfile i la imatge original. En comptes d'utilitzar la imatge bàsica de ubuntu n'utilitzarem una personalitzada que inclou l'inici amb systemd. Concretament __jrei/systemd-ubuntu__.
+
+D'altra banda hem de fer que la comanda que inicial sigui el systemd. Necesitem però que el servei ssh s'inicii si o si ja que sino el client no podria connecatrse al seu VPS.
+
+Per tant el que es fa és conservar la comanda 'CMD' que executava el servei ssh. En canvi afegirem un 'ENTRYPOINT' per systemd. Un 'ENTRYPOINT' vindria a ser la comanda principal que executarà el contenidor, posteriorment s'executarà la comanda 'CMD'.
+
+    FROM jrei/systemd-ubuntu
+
+    RUN apt-get update && apt-get install -y openssh-server
+    RUN mkdir /var/run/sshd
+    RUN echo 'root:patates' | chpasswd
+    RUN sed -ie '0,/#PermitRootLogin prohibit-password/s/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+    # SSH login fix. Otherwise user is kicked off after login
+    RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+    ENV NOTVISIBLE "in users profile"
+    RUN echo "export VISIBLE=now" >> /etc/profile
+
+    EXPOSE 22
+    EXPOSE 80
+    ENTRYPOINT ["/lib/systemd/systemd"]
+    CMD ["/usr/sbin/sshd", "-D"]
+
+
+Si fem una imatge amb el nou Dockerfile i arranquem un contenidor veurem que, tot hi haver 'executat' el servei ssh no podem connectar per aquesta via.
+
+Podem executar la consola de bash per veure que està passant al contenidor.
+
+    docker exec -it <nom_contenidor> /bin/bash
+
+Si es comprova el systemctl veurem que no funciona tot hi haver iniciat amb systemd. També es pot observar que el servei ssh no està iniciat.
+
+![ssh no iniciat](images/captura8.png)
+
+La configuració del Dockerfile és correcta i el contenidor s'ha iniciat amb el systemd. LLavors que és el que està fallant?.
+
+Resulta que Docker executa els contenidors amb certes capabilities desactivades. Això fa que no pugui accedir a totes les funcions del kernel host.
+
+Per a poder executar correctament aquest contenidor amb totes les comandes disponibles s'ha de fer amb el que s'anomena mode privilegiat __--privileged__.
+A més hem de montar la carpeda dels grups de control (cgroups) perque tot funcioni correctament. Ho fem amb opció de ReadOnly.
+
+    docker run -d --privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro <nom_imatge>
+
+Si executem el docker d'aquesta manera, ara s'haurà iniciat el contenidor amb systemd i tindrem el servei ssh actiu.
+
+__IMPORTANT__
+
+Iniciar un docker de forma privilegiada amb --privileged dona acces total al kernel host. Fins i tot és possible arribar a modificar fitxers del sistema host des de dins del contenidor.
+
+Aquesta opció és bastant perillosa en quant a seguretat i integritat del sistema per tant es recomana no donar el mode privilegiat als contenidors.
+
+Per contra s'haurien d'afegir només les capabilities necessaries. Això es pot fer amb el paràmetre __--cap-add__ 
+quan es crea el contenidor.
 
 
 
+## 5.5 Altres funcionalitats
+
+Ara ja hauriem de tenir un docker amb ssh, s'hagi obtat per tenir un contenidor privilegiat amb systemcl o no.
+
+Recordem que els contenidors docker només tenen el mínim necessari per funcionar per tant, tots aquells processos no especificats alhora de crear la imatge no estaran disponibles.
+
+Això també afecta al syslog. Per defecte no tindrem syslog. Com que és interessant tenir-lo el podem afegir quan creem la imatge amb el fitxer DockerFile. Això valdria per qualsevol paquet que necessitem.
+
+Per tenir syslog només hem d'afegir la linia d'instal·lació al __[Dockerfile](https://github.com/fxbp/CMXSI-PROJ2/blob/master/Dockerfile)__.
+
+    RUN apt-get -y install rsyslog
 
 
 
+\newpage
 
-## Bibliografia
-[1] Que és un VPS:
+# Referències
 
-https://www.hostinger.es/tutoriales/que-es-un-vps
+[1] [Que és un VPS](https://www.hostinger.es/tutoriales/que-es-un-vps)
 
-[2] Virtualització amb contenidors
+[2] [Virtualització amb contenidors](https://www.ionos.es/digitalguide/servidores/know-how/alternativas-a-los-contenedores-en-docker/)
 
-https://www.ionos.es/digitalguide/servidores/know-how/alternativas-a-los-contenedores-en-docker/
+[3] [LXC vs KVM](https://www.skysilk.com/blog/2019/lxc-vs-kvm/)
 
-[3] LXC vs KVM
+[4] [Documentació docker run](https://docs.docker.com/engine/reference/run/)
 
-https://www.skysilk.com/blog/2019/lxc-vs-kvm/
+[5] [Limitació memoria i cpu docker](https://docs.docker.com/config/containers/resource_constraints/)
 
-[4] Documentació docker run
 
-https://docs.docker.com/engine/reference/run/
+```
+pandoc README.md -o README.pdf --from markdown --template eisvogel --listings --toc --pdf- engine=xelatex
+```
