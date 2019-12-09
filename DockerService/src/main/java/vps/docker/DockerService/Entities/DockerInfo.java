@@ -16,7 +16,7 @@ public class DockerInfo {
 
     private String httpPort;
 
-    private String httpsPort;
+private String httpsPort;
 
     private List<String> bindedPorts; //external:internal ports
 

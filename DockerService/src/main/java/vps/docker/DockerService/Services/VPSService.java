@@ -13,7 +13,14 @@ public class VPSService {
 
     public ResponseEntity<?> create(DockerInfo dockerInfo){
 
+        System.out.println("Dins del servei");
         DockerCreateInstruction createInstruction = new DockerCreateInstruction(dockerInfo);
+
+        System.out.println("Comanda docker:");
+        for(String s:createInstruction.getCommand()){
+            System.out.print(s+ " ");
+        }
+        System.out.println();
         CmdRunnable runnable = new CmdRunnable(createInstruction);
         runnable.run();
 
