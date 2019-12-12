@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
-import CreateDocker from './components/CreateDocker.js'
+import './App.css'
+import {BrowserRouter as Router, Route, Switch } from "react-router-dom"
+
+import Main from './components/Main.js'
+import Create from './components/Create.js'
 
 class App extends Component {
-  render() {
-    return (
+  
+  render(){
+    return(
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+        <div className="App-header">            
+          <h2>VPS DOCKERS</h2>
         </div>
-        <CreateDocker ></CreateDocker>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Router>
+          <Switch>
+            <Route path="/" exact component={Main} />
+            <Route path="/create" exact component={Create} /> 
+          </Switch>
+        </Router>
       </div>
-    );
+    )
+
   }
 }
 
