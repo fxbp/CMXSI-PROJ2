@@ -10,15 +10,17 @@ import Button from '@material-ui/core/Button'
 
 
 const rows = [
-    createData("Ubuntu", "256m", 1, "3€"),
-    createData("Ubuntu", "512m", 1, "5€"),
-    createData("Ubuntu", "1g", 1, "7€"),
-    createData("Ubuntu", "512g", 2, "9€"),
-    createData("Ubuntu", "1g", 2, "11€")
+    createData("Ubuntu", "256m", 1, "3€" ,false),
+    createData("Ubuntu", "512m", 1, "5€" ,false),
+    createData("Ubuntu", "1g", 1, "7€" ,false),
+    createData("Ubuntu", "512g", 2, "9€" ,false),
+    createData("Ubuntu", "1g", 2, "11€",false),
+    createData("Ubuntu", "256m", 1, "11€" ,true),
+    createData("Ubuntu", "512m", 1, "15€" ,true)
 ];
   
-function createData(system, mem, cpu, price) {
-    return {system, mem, cpu, price };
+function createData(system, mem, cpu, price, privileged) {
+    return {system, mem, cpu, price,privileged };
   }
 
 
@@ -52,6 +54,7 @@ class TableVps extends Component{
                 <TableCell align="right">Memoria</TableCell>
                 <TableCell align="right">Cpu</TableCell>
                 <TableCell align="right">Preu</TableCell>
+                <TableCell align="right">Privilegiat</TableCell>
                 <TableCell align="right"></TableCell>
                 </TableRow>
             </TableHead>
@@ -64,6 +67,7 @@ class TableVps extends Component{
                     <TableCell align="right">{row.mem}</TableCell>
                     <TableCell align="right">{row.cpu}</TableCell>
                     <TableCell align="right">{row.price}</TableCell>
+                    <TableCell align="right">{row.privileged? "Si":"No"}</TableCell>
                     <TableCell align="right"><Button variant="contained" color="primary" onClick={() => this.createDocker(row) }>Crear</Button></TableCell>
                 </TableRow>
                 ))}
