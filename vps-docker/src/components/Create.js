@@ -10,41 +10,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-}));
-
-
-
-const generateElement = (key,value) => {
-    return (
-      <div key={key} className="row">
-        <div className="col-xs-6 ins-label">{key}</div>
-        <div className="col-xs-6">{value}</div>
-      </div>
-    );
-  }
-  
-  function generateData(data) {
-    const newData = Object.keys(data).reduce((result, currentKey) => {
-      if (typeof data[currentKey] === 'string' || data[currentKey] instanceof String) {
-        const elementToPush = generateElement(currentKey, data[currentKey]);
-        result.push(elementToPush);
-      } else {
-        const nested = generateData(data[currentKey]);
-        result.push(...nested);
-      }
-      return result;
-    }, []);
-    return newData;
-  }
 
 
 class Create extends Component{
@@ -174,7 +139,7 @@ class Create extends Component{
                     </Table>
                 </Paper>
 
-                <h4>Els teus ports de connexio extra son els segents:</h4>
+                <h4>Els teus ports de connexió extra son els següents:</h4>
                 <p> El port de l'esquerra (extern) és el port de connexió des de fora. El port de la dreta (intern) es el port que té disponible el VPS</p>
                 <Paper> 
                     <Table  size="small" aria-label="a dense table">
