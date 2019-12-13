@@ -4,7 +4,6 @@ import java.util.List;
 
 public class DockerInfo {
 
-    private String name;
 
     private String memory;
 
@@ -16,23 +15,18 @@ public class DockerInfo {
 
     private String httpPort;
 
-private String httpsPort;
+    private String httpsPort;
 
     private List<String> bindedPorts; //external:internal ports
 
     private String system;
 
+    private String pass;
+
     public DockerInfo(){
 
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getMemory() {
         return memory;
@@ -96,5 +90,13 @@ private String httpsPort;
 
     public void setSystem(String system) {
         this.system = system;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 }

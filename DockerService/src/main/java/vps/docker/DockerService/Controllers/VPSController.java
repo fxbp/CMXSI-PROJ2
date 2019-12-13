@@ -1,17 +1,16 @@
 package vps.docker.DockerService.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vps.docker.DockerService.Entities.DockerInfo;
 import vps.docker.DockerService.Services.VPSService;
 
 @RestController
 @RequestMapping("/api/vps")
+@CrossOrigin(origins = "*", exposedHeaders = HttpHeaders.AUTHORIZATION, methods= {RequestMethod.GET,RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 public class VPSController {
 
     @Autowired

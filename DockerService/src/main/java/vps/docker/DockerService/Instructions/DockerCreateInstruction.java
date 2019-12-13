@@ -13,18 +13,15 @@ public class DockerCreateInstruction extends Instruction {
         _command.add("docker");
         _command.add("run");
         _command.add("-d");
-        if(info.getName() != null) {
-            _command.add("--name");
-            _command.add(info.getName());
-        }
-        _command.add("-p");
-        _command.add(info.getSshPort()+":22");
 
         _command.add("-p");
-        _command.add(info.getHttpPort()+":80");
+        _command.add(info.getSshPort());
 
         _command.add("-p");
-        _command.add(info.getHttpsPort()+":22");
+        _command.add(info.getHttpPort());
+
+        _command.add("-p");
+        _command.add(info.getHttpsPort());
 
         for(String ports : info.getBindedPorts()){
             _command.add("-p");
@@ -36,7 +33,9 @@ public class DockerCreateInstruction extends Instruction {
         _command.add("--cpus="+info.getCpus());
 
         if(info.isPrivileged()){
-            _command.add("--privileged -v /sys/fs/cgroup:/sys/fs/cgroup:ro ");
+            _command.add("--privileged");
+            _command.add("-v");
+            _command.add("/sys/fs/cgroup:/sys/fs/cgroup:ro");
         }
 
         _command.add(info.getSystem());
