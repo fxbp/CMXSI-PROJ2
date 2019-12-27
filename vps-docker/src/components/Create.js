@@ -42,7 +42,7 @@ class Create extends Component{
         
         if(this.state){
             console.log(this.state)
-            axios.post('http://192.168.1.7:8080/api/vps',
+            axios.post('http://192.168.1.9:8080/api/vps',
                 {
             
                     'memory':this.state.mem,

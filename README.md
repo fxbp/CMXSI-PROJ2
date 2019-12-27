@@ -378,6 +378,8 @@ Com es pot observar no ocupen gaires recursos ja que cada contenidor només te e
 
 __Requeriments__
 
+Es possible que en alguns entorns sigui necessari algunes configuracions previes abans de poder limitar els recursos dels dockers.
+
 Per poder executar correctament la comanda de docker que limita le memoria, s'ha de modificar el fitxer de configuració del host: __/etc/default/grub__. 
 Un cop modificat s'ha de fer un update del grub i reiniciar la màquina.
 
@@ -489,6 +491,82 @@ Per tenir syslog només hem d'afegir la linia d'instal·lació al __[Dockerfile]
 
 
 
+# 6 Plataforma VPS
+
+Per automatitzar el proces de creació de servidors privats virtuals (VPS) he creat un parell d'aplicacions. Un webservice que està connectat amb la plataforma Docker i una apliació web que permet que l'usuari creii els seus servidors virtuals.
+
+Els contenidors tindran limitacions de memoria i cpu fixes. A part un cop 'bindejats' els ports, no es poden canviar sense apagar el docker i crear-ne un de nou.
+
+No he mirat quines eines hi ha per fer aquestes funcionalitats. Una opció però seria crear imatges a partir dels contenidors actuals (per conservar tot el que el client hagi pogut guardar o instal·lar dins el contenidor) i generar nous contenidors amb les imatges noves.
+
+## 6.1 Webservice
+
+El servei web gestiona les peticions que fa el client web. Aquest servei es comunica amb el daemon de docker per tal de crear i engegar els dockers que demanen els clients.
+
+Es un webservice molt simple fet amb Java i Spring Boot. En aquest cas només s'ocupa d'atendre la crida per crar un VPS des del client web, però per fer-ho be també hauria de gestionar l'autenticació del client i verificar quines accions pot fer.
+
+El projecte est dins el directori DockerService. També es pot trobar a __[Projecte Spring VPS](https://github.com/fxbp/CMXSI-PROJ2/tree/master/DockerService)__.
+
+
+Per estalivar feina he reutulitzt codi que ja tenia d'un altre projecte. El que fa el webservice, un cop rep la petició, és executar un 'runnable' directe contra el bash d'ubuntu. Per tant és necessari que el servei web s'axiequi amb un usuari que pugui realizar crides de docker, amb un usuari que pertanyi al grup docker.
+
+Buscant vies alternatives, també existeix una API de Docker que permet la gestió de tot l'entorn, imatges, contenidors, volumns, xarxes, etc. No hi he entrat però a la llarga semblaria una via millor i més escalable que les crides a bash. La API canvia molt sobint per tant s'ha de vigilar amb la versió. Podem trobar la documentació de la 1.24 a [6].
+
+## 6.2 Client web
+
+He fet un petit client web que permet escollir diferents configuracions de VPS. Es mol senzill i serveix només a mode de demostració. El client està fet amb react (javascript). El codi es pot trovar dins dle directori vps-docker o també a __[Projecte react VPS](https://github.com/fxbp/CMXSI-PROJ2/tree/master/vps-docker)__
+
+El client ofereix un llistat de serveix prefixats. Un cop se n'escull un es fa una petició al servidor web que crearà el docker corresponent. Finalment es mostren les dades necessaries per connectar amb el VPS. Dins la informació rellevant hi ha un seguit d'assignacions de ports entre la maquina real i el docker per tal que el client pugui utilitzar ports cap a l'exterior del docker. Els ports ssh, http i https estan ja especificats.
+
+![Llistat disponibles](images/captura9.png)
+
+
+![Creació docker](images/captura10.png)
+
+
+## 6.3 Seguretat
+
+Com ja he explicat anteriorment el servidor web s'ha d'executar amb un 
+usuari del grup docker. Aquest usuari no cal que sigui root i per tant també tanquem la porta a possibles atacs per aquesta via.
+
+### 6.3.1 Contrasenya ssh
+
+També és important la seguretat dins dels dockers. Com ja s'ha explicat, a tots els docker VPS se'ls instala openssh per tal que el client pugui accedir a ells un cop iniciats. 
+
+El problema del docker es que la contrasenya per ssh del root es crea dins la imatge, per tant tots els contenidors que utilitzin aquella imatge tindran la mateixa contrasenya.
+
+La idea aqui és generar una contrasenya aleatoria cada cop que es crea un nou docker i canviar-li al root. Aquesta contrasenya també l'hauria de canviar el client un cop accedeixi. No està fet pero al iniciar l'ubuntu es pot demanar un canvi de contrasenya obligatori.
+
+
+Des del servidor web s'intenta canviar la contrasenya pero per culpa de les redireccions de sortida que fan els runnables dins del codi, no es poden fer pipes (|) a les instruccions. Com a resultat la contrasenya no es canvia. He provat alguna altre solucio simple pero sembla que no funcióna. S'hauria d'invertir més temps en aquest apartat per veure quina seria la solució optima, potser canviant a la API es pot solucionar facilment.
+
+
+### 6.3.2 CORS
+
+Aquest es un punt feble de l'aplicació. En desenvolupament el client web i el servidor web son el matiex. Aixó fa que salti un error per el CORS (cross origin resource sharing). Per evitar-ho he hagut d'afegir una configuració al servidor web per tal que deixi passar aquest tipus de connexió. 
+
+Per anar bé s'hauria de treure.
+
+
+# Conslusions
+
+Tot i que docker permet crear un contenidor a partir només d'una imatge de sistema operatiu, i per tant utilitzar-los com a VPS, personalment no recomano utilitzar-los així.
+
+Docker està pensat per tenir microserveis, es a dir, que en un contenidor hi corri només el necesari per fer funcionar una aplicació.
+
+Com he anat explicant, els contenidors tenen només els paquets necessaris i que explicitament s'han instal·lat en les imatges. Això fa que el sistema operatiu que es pugui crear li faltin moltes cosses esencials com a sistema.
+
+La utilització d'un sol kernel i que no es necessiti virtualitzar hardware, fa que crear i axiecar un contenidor sigui molt simple i rapid, però per fer certes coses necessitem un acces privilegiat al kernel que molts cops no és una bona opció.
+
+Docker en principi te ben aillats els diferents contenidors pero al compartir kernel i el fet que es montin carpetes del so host com a volumns fa que, mal configurat, pugui comportar un risc de seguretat.
+
+Una alternativa per tenir diferents serveis enllacats corrent a docker és utilitzar docker-compose [7].  
+
+Amb docker-compose podem fer les mateixes accions que amb el docker run: crear i assignar volums, bindejar ports, assignar adreces de xarxa fixes, etc. Dins del mateix fitxer compose es poden declarar diferents contenidors. Aquest contenidors poden dependre d'altres del mateix fitxer i no engegar-se fins que els primers estiguin llestos.
+
+Per exemple si necessitem un apache que tingui connexio a una base de dades, podem tenir 2 contenidors: 1 per l'apache i l'altre que nomes faci de BDD. 
+
+
 \newpage
 
 # Referències
@@ -502,6 +580,11 @@ Per tenir syslog només hem d'afegir la linia d'instal·lació al __[Dockerfile]
 [4] [Documentació docker run](https://docs.docker.com/engine/reference/run/)
 
 [5] [Limitació memoria i cpu docker](https://docs.docker.com/config/containers/resource_constraints/)
+
+
+[6] [API Docker](https://docs.docker.com/engine/api/v1.24/)
+
+
 
 
 ```
