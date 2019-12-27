@@ -194,7 +194,7 @@ Primer de tot els paquets que permeten a ‘apt’ utilitzar HTTPS.
 
 Després s’afegeix la clau GPG per el repositori de Docker.
 
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add –
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 Afegim el repositori de Docker a les fonts ‘apt’
 
@@ -202,7 +202,7 @@ Afegim el repositori de Docker a les fonts ‘apt’
 
 I finalment s’actualitza la base de dades de paquets
 
-    sudo apt Update
+    sudo apt update
 
 Ara ja es pot instal·lar Docker a ubuntu.
 
