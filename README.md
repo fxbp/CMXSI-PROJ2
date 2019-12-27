@@ -2,7 +2,7 @@
 ---
 title: "Servidors virtuals complets (VPS)"
 author: [Francesc Xavier Bullich Parra, GEINF (UDG-EPS)]
-date: 4 de Desembre de 2019
+date: 27 de Desembre de 2019
 subject: "Udg - Eps"
 tags: [VPS]
 subtitle: "Tutor de la pràctica : Antonio Bueno"
@@ -548,7 +548,7 @@ Aquest es un punt feble de l'aplicació. En desenvolupament el client web i el s
 Per anar bé s'hauria de treure.
 
 
-# Conslusions
+# 7 Conslusions
 
 Tot i que docker permet crear un contenidor a partir només d'una imatge de sistema operatiu, i per tant utilitzar-los com a VPS, personalment no recomano utilitzar-los així.
 
@@ -585,8 +585,15 @@ Per exemple si necessitem un apache que tingui connexio a una base de dades, pod
 [6] [API Docker](https://docs.docker.com/engine/api/v1.24/)
 
 
+[7] [Docker compose](https://docs.docker.com/compose/)
 
 
 ```
+Ubuntu
+pandoc README.md -o README.pdf --from markdown --template eisvogel --listings --toc
+
+
+Windows
+
 pandoc README.md -o README.pdf --from markdown --template eisvogel --listings --toc --pdf- engine=xelatex
 ```
