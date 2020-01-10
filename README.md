@@ -21,6 +21,7 @@ Un VPS és una solució més segura i estable que contractar un hosting comparti
 partició virtual d’un servidor físic al que se li assigna recursos exclusius i en el qual si pot instal·lar un
 sistema operatiu que permet treballar amb més llibertat.
 Alguns aspectes importants dels VPS son:
+
 - Els problemes de trànsit d’altres usuaris no l’afecten
 - S’obté accés de superusuari, per tant s’obté total llibertat dins del VPS
 - Es té major privacitat, ja que les bases de dades estan bloquejades a altres usuaris del servidor
@@ -595,5 +596,5 @@ pandoc README.md -o README.pdf --from markdown --template eisvogel --listings --
 
 Windows
 
-pandoc README.md -o README.pdf --from markdown --template eisvogel --listings --toc --pdf- engine=xelatex
+pandoc README.md -o README.pdf --from markdown --template eisvogel --listings --toc --pdf-engine=xelatex
 ```
