@@ -587,3 +587,12 @@ Per exemple si necessitem un apache que tingui connexió a una base de dades, po
 
 [7] [Docker compose](https://docs.docker.com/compose/)
 
+```
+Ubuntu
+pandoc README.md -o README.pdf --from markdown --template eisvogel --listings --toc
+
+
+Windows
+
+pandoc README.md -o README.pdf --from markdown --template eisvogel --listings --toc --pdf-engine=xelatex
+```
